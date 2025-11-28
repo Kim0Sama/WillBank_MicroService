@@ -1,3 +1,6 @@
 [submodule "Eureka-Service"]
 	path = Eureka-Service
 	url = https://github.com/MrMoyo1/Eureka-Service.git
+[submodule "Notification-service"]
+	path = Notification-service
+	url = https://github.com/MrMoyo1/Notification-service.git
