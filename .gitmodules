@@ -1,0 +1,3 @@
+[submodule "Eureka-Service"]
+	path = Eureka-Service
+	url = https://github.com/MrMoyo1/Eureka-Service.git
