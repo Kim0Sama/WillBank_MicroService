@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { Account } from '../../../models/account.model';
 import { AccountService } from '../../../services/account.service';
 import { ClientService } from '../../../services/client.service';
@@ -22,7 +23,8 @@ export class AdminAccountsComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -78,5 +80,61 @@ export class AdminAccountsComponent implements OnInit {
 
   getTotalBalance(): number {
     return this.filteredAccounts.reduce((sum, acc) => sum + acc.balance, 0);
+  }
+
+  showCreateForm = false;
+  createForm = {
+    customerId: 0,
+    accountType: 'CHECKING' as 'SAVINGS' | 'CHECKING' | 'BUSINESS',
+    initialBalance: 0
+  };
+
+  onCreateAccount(): void {
+    if (this.createForm.customerId <= 0) {
+      alert('Veuillez entrer un ID client valide');
+      return;
+    }
+
+    this.accountService.createAccount(this.createForm).subscribe({
+      next: () => {
+        alert('Compte créé avec succès!');
+        this.showCreateForm = false;
+        this.createForm = {
+          customerId: 0,
+          accountType: 'CHECKING',
+          initialBalance: 0
+        };
+        this.loadAllAccounts();
+      },
+      error: (error) => {
+        alert('Échec de la création du compte: ' + (error.error?.message || 'Erreur inconnue'));
+      }
+    });
+  }
+
+  selectedAccount: any = null;
+
+  viewAccount(account: any): void {
+    this.selectedAccount = account;
+  }
+
+  closeAccountDetails(): void {
+    this.selectedAccount = null;
+  }
+
+  updateAccountStatus(accountNumber: string, status: string): void {
+    if (!confirm(`Voulez-vous vraiment changer le statut de ce compte à ${status}?`)) {
+      return;
+    }
+
+    this.http.put(`/api/admin/accounts/${accountNumber}/status?status=${status}`, {}).subscribe({
+      next: () => {
+        alert('Statut du compte mis à jour avec succès');
+        this.loadAllAccounts();
+      },
+      error: (error) => {
+        alert('Erreur lors de la mise à jour: ' + (error.error?.message || 'Erreur inconnue'));
+      }
+    });
   }
 }

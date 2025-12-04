@@ -1,7 +1,41 @@
 <div class="admin-accounts">
   <div class="page-header">
     <h1>Gestion des Comptes</h1>
-    <p class="subtitle">{{ filteredAccounts.length }} compte(s) - Solde total: {{ getTotalBalance() | currency: 'EUR' }}</p>
+    <div class="header-actions">
+      <p class="subtitle">{{ filteredAccounts.length }} compte(s) - Solde total: {{ getTotalBalance() | currency: 'EUR' }}</p>
+      <button class="btn-primary" (click)="showCreateForm = !showCreateForm">
+        {{ showCreateForm ? 'Annuler' : '+ Nouveau Compte' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Account Form -->
+  <div *ngIf="showCreateForm" class="create-form card">
+    <h2>Créer un Nouveau Compte</h2>
+    <form (ngSubmit)="onCreateAccount()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID Client *</label>
+          <input type="number" [(ngModel)]="createForm.customerId" name="customerId" required>
+        </div>
+        <div class="form-group">
+          <label>Type de Compte *</label>
+          <select [(ngModel)]="createForm.accountType" name="accountType" required>
+            <option value="CHECKING">Compte Courant</option>
+            <option value="SAVINGS">Compte Épargne</option>
+            <option value="BUSINESS">Compte Professionnel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Dépôt Initial *</label>
+          <input type="number" [(ngModel)]="createForm.initialBalance" name="initialBalance" min="0" step="0.01" required>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Créer Compte</button>
+        <button type="button" class="btn-secondary" (click)="showCreateForm = false">Annuler</button>
+      </div>
+    </form>
   </div>
 
   <!-- Filters -->
@@ -42,6 +76,7 @@
           <th>Statut</th>
           <th>Date création</th>
           <th>Dernière MAJ</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -54,6 +89,11 @@
           <td><span class="badge" [ngClass]="account.status.toLowerCase()">{{ account.status }}</span></td>
           <td>{{ account.createdAt | date: 'short' }}</td>
           <td>{{ account.updatedAt | date: 'short' }}</td>
+          <td>
+            <button class="btn-action" (click)="viewAccount(account)">👁️ Voir</button>
+            <button *ngIf="account.status === 'ACTIVE'" class="btn-action warning" (click)="updateAccountStatus(account.accountNumber, 'INACTIVE')">⏸️</button>
+            <button *ngIf="account.status === 'INACTIVE'" class="btn-action success" (click)="updateAccountStatus(account.accountNumber, 'ACTIVE')">▶️</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -63,3 +103,67 @@
     </div>
   </div>
 </div>
+
+
+  <!-- Account Details Modal -->
+  <div *ngIf="selectedAccount" class="modal-overlay" (click)="closeAccountDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Détails du compte</h2>
+        <button class="btn-close" (click)="closeAccountDetails()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>Numéro de compte</label>
+            <span>{{ selectedAccount.accountNumber }}</span>
+          </div>
+          <div class="detail-item">
+            <label>ID Client</label>
+            <span>{{ selectedAccount.customerId }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Nom du client</label>
+            <span>{{ getClientName(selectedAccount.customerId) }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Type de compte</label>
+            <span class="badge type">{{ selectedAccount.accountType }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Solde</label>
+            <span class="balance">{{ selectedAccount.balance | currency: selectedAccount.currency }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Devise</label>
+            <span>{{ selectedAccount.currency }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Statut</label>
+            <span class="badge" [ngClass]="selectedAccount.status.toLowerCase()">{{ selectedAccount.status }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Date de création</label>
+            <span>{{ selectedAccount.createdAt | date: 'full' }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Dernière mise à jour</label>
+            <span>{{ selectedAccount.updatedAt | date: 'full' }}</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button *ngIf="selectedAccount.status === 'ACTIVE'" class="btn-warning" (click)="updateAccountStatus(selectedAccount.accountNumber, 'INACTIVE')">
+            Désactiver le compte
+          </button>
+          <button *ngIf="selectedAccount.status === 'INACTIVE'" class="btn-success" (click)="updateAccountStatus(selectedAccount.accountNumber, 'ACTIVE')">
+            Activer le compte
+          </button>
+          <button class="btn-danger" (click)="updateAccountStatus(selectedAccount.accountNumber, 'CLOSED')">
+            Fermer le compte
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

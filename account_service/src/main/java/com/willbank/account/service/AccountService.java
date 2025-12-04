@@ -124,6 +124,13 @@ public class AccountService {
         return account.getBalance();
     }
     
+    public List<AccountDto> getAllAccounts() {
+        return accountRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+    
     private String generateAccountNumber() {
         String prefix = "WB";
         Random random = new Random();

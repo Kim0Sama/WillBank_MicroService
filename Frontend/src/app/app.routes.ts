@@ -18,5 +18,6 @@ export const routes: Routes = [
   { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard] },
   { path: 'admin/clients', component: AdminClientsComponent, canActivate: [AuthGuard] },
   { path: 'admin/accounts', component: AdminAccountsComponent, canActivate: [AuthGuard] },
-  { path: 'admin/transactions', component: AdminTransactionsComponent, canActivate: [AuthGuard] }
+  { path: 'admin/transactions', component: AdminTransactionsComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/login' } // Wildcard route - redirect unknown routes to login
 ];

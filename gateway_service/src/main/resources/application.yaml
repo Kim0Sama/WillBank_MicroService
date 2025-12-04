@@ -51,6 +51,28 @@ spring:
             - Path=/api/transactions/**
           filters:
             - AuthenticationFilter
+        
+        # Admin routes
+        - id: admin-clients
+          uri: lb://CLIENT-SERVICE
+          predicates:
+            - Path=/api/admin/clients/**
+          filters:
+            - AuthenticationFilter
+        
+        - id: admin-accounts
+          uri: lb://ACCOUNT-SERVICE
+          predicates:
+            - Path=/api/admin/accounts/**
+          filters:
+            - AuthenticationFilter
+        
+        - id: admin-transactions
+          uri: lb://TRANSACTION-SERVICE
+          predicates:
+            - Path=/api/admin/transactions/**
+          filters:
+            - AuthenticationFilter
 
 eureka:
   client:

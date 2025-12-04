@@ -13,5 +13,5 @@ export interface Account {
 export interface CreateAccountRequest {
   customerId: number;
   accountType: 'SAVINGS' | 'CHECKING' | 'BUSINESS';
-  initialDeposit: number;
+  initialBalance: number;
 }

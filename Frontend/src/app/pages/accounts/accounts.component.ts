@@ -19,7 +19,7 @@ export class AccountsComponent implements OnInit {
   createForm: CreateAccountRequest = {
     customerId: 1,
     accountType: 'CHECKING',
-    initialDeposit: 0
+    initialBalance: 0
   };
 
   constructor(
@@ -50,7 +50,7 @@ export class AccountsComponent implements OnInit {
   }
 
   onCreateAccount(): void {
-    if (this.createForm.initialDeposit < 0) {
+    if (this.createForm.initialBalance < 0) {
       alert('Initial deposit must be positive');
       return;
     }
@@ -63,7 +63,7 @@ export class AccountsComponent implements OnInit {
         this.createForm = {
           customerId: this.customerId,
           accountType: 'CHECKING',
-          initialDeposit: 0
+          initialBalance: 0
         };
         this.loadAccounts();
       },

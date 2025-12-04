@@ -205,6 +205,19 @@ public class TransactionService {
         return "TXN-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
     
+    public List<TransactionDto> getAllTransactions() {
+        return transactionRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+    
+    public TransactionDto getTransactionById(Long id) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found: " + id));
+        return mapToDto(transaction);
+    }
+    
     private TransactionDto mapToDto(Transaction transaction) {
         return new TransactionDto(
                 transaction.getId(),
