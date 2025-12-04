@@ -1,0 +1,118 @@
+<div class="admin-dashboard">
+  <div class="page-header">
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Vue d'ensemble de la plateforme WillBank</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon clients">👥</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalClients }}</h3>
+        <p>Total Clients</p>
+        <span class="stat-detail">{{ stats.activeClients }} actifs</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon accounts">💳</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalAccounts }}</h3>
+        <p>Total Comptes</p>
+        <span class="stat-detail">Tous types confondus</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon balance">💰</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalBalance | currency: 'EUR' }}</h3>
+        <p>Solde Total</p>
+        <span class="stat-detail">Tous comptes</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon transactions">📊</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalTransactions }}</h3>
+        <p>Transactions</p>
+        <span class="stat-detail">Dernières 24h</span>
+      </div>
+    </div>
+
+    <div class="stat-card warning">
+      <div class="stat-icon kyc">⚠️</div>
+      <div class="stat-content">
+        <h3>{{ stats.pendingKyc }}</h3>
+        <p>KYC en attente</p>
+        <span class="stat-detail">À vérifier</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Clients -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Clients récents</h2>
+      <a routerLink="/admin/clients" class="btn-link">Voir tout →</a>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Statut</th>
+            <th>KYC</th>
+            <th>Date création</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of recentClients">
+            <td>{{ client.id }}</td>
+            <td>{{ client.firstName }} {{ client.lastName }}</td>
+            <td>{{ client.email }}</td>
+            <td><span class="badge" [ngClass]="client.status.toLowerCase()">{{ client.status }}</span></td>
+            <td><span class="badge" [ngClass]="client.kycStatus.toLowerCase()">{{ client.kycStatus }}</span></td>
+            <td>{{ client.createdAt | date: 'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Transactions récentes</h2>
+      <a routerLink="/admin/transactions" class="btn-link">Voir tout →</a>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Type</th>
+            <th>Compte</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of recentTransactions">
+            <td>{{ transaction.transactionReference }}</td>
+            <td>{{ transaction.transactionType }}</td>
+            <td>{{ transaction.fromAccount }}</td>
+            <td class="amount">{{ transaction.amount | currency: 'EUR' }}</td>
+            <td><span class="badge" [ngClass]="transaction.status.toLowerCase()">{{ transaction.status }}</span></td>
+            <td>{{ transaction.createdAt | date: 'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

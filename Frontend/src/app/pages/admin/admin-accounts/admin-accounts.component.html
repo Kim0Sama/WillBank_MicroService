@@ -1,0 +1,65 @@
+<div class="admin-accounts">
+  <div class="page-header">
+    <h1>Gestion des Comptes</h1>
+    <p class="subtitle">{{ filteredAccounts.length }} compte(s) - Solde total: {{ getTotalBalance() | currency: 'EUR' }}</p>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (ngModelChange)="applyFilters()"
+        placeholder="Rechercher par numéro de compte...">
+    </div>
+
+    <select [(ngModel)]="filterType" (ngModelChange)="applyFilters()">
+      <option value="ALL">Tous les types</option>
+      <option value="SAVINGS">Épargne</option>
+      <option value="CHECKING">Courant</option>
+      <option value="BUSINESS">Professionnel</option>
+    </select>
+
+    <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()">
+      <option value="ALL">Tous les statuts</option>
+      <option value="ACTIVE">Actif</option>
+      <option value="INACTIVE">Inactif</option>
+      <option value="CLOSED">Fermé</option>
+    </select>
+  </div>
+
+  <!-- Accounts Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Numéro de compte</th>
+          <th>Client</th>
+          <th>Type</th>
+          <th>Solde</th>
+          <th>Devise</th>
+          <th>Statut</th>
+          <th>Date création</th>
+          <th>Dernière MAJ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let account of filteredAccounts">
+          <td class="account-number">{{ account.accountNumber }}</td>
+          <td>{{ getClientName(account.customerId) }}</td>
+          <td><span class="badge type">{{ account.accountType }}</span></td>
+          <td class="balance">{{ account.balance | currency: account.currency }}</td>
+          <td>{{ account.currency }}</td>
+          <td><span class="badge" [ngClass]="account.status.toLowerCase()">{{ account.status }}</span></td>
+          <td>{{ account.createdAt | date: 'short' }}</td>
+          <td>{{ account.updatedAt | date: 'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="filteredAccounts.length === 0" class="no-data">
+      <p>Aucun compte trouvé</p>
+    </div>
+  </div>
+</div>

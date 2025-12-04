@@ -36,6 +36,9 @@ public class Account {
     @DecimalMin(value = "0.0", inclusive = true)
     private BigDecimal balance;
     
+    @Column(length = 3)
+    private String currency = "EUR";
+    
     @NotNull
     @Enumerated(EnumType.STRING)
     private AccountStatus status;

@@ -1,0 +1,142 @@
+<div class="transactions-page">
+  <div class="page-header">
+    <h1>Transactions</h1>
+  </div>
+
+  <div class="transactions-content">
+    <!-- Account Selector -->
+    <div class="account-selector">
+      <label for="account">Select Account:</label>
+      <select id="account" [(ngModel)]="selectedAccount" (change)="onAccountChange()">
+        <option *ngFor="let account of accounts" [value]="account.accountNumber">
+          {{ account.accountNumber }} - {{ account.balance | currency: account.currency }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Transaction Forms -->
+    <div class="transaction-forms">
+      <div class="tabs">
+        <button 
+          class="tab" 
+          [class.active]="activeTab === 'deposit'"
+          (click)="setActiveTab('deposit')">
+          Deposit
+        </button>
+        <button 
+          class="tab" 
+          [class.active]="activeTab === 'withdrawal'"
+          (click)="setActiveTab('withdrawal')">
+          Withdrawal
+        </button>
+        <button 
+          class="tab" 
+          [class.active]="activeTab === 'transfer'"
+          (click)="setActiveTab('transfer')">
+          Transfer
+        </button>
+      </div>
+
+      <!-- Deposit Form -->
+      <div *ngIf="activeTab === 'deposit'" class="form-container">
+        <form (ngSubmit)="onDeposit()">
+          <div class="form-group">
+            <label>Account</label>
+            <select [(ngModel)]="depositForm.accountNumber" name="depositAccount">
+              <option *ngFor="let account of accounts" [value]="account.accountNumber">
+                {{ account.accountNumber }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Amount</label>
+            <input type="number" [(ngModel)]="depositForm.amount" name="depositAmount" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" [(ngModel)]="depositForm.description" name="depositDescription">
+          </div>
+          <button type="submit" class="btn-primary">Deposit</button>
+        </form>
+      </div>
+
+      <!-- Withdrawal Form -->
+      <div *ngIf="activeTab === 'withdrawal'" class="form-container">
+        <form (ngSubmit)="onWithdrawal()">
+          <div class="form-group">
+            <label>Account</label>
+            <select [(ngModel)]="withdrawalForm.accountNumber" name="withdrawalAccount">
+              <option *ngFor="let account of accounts" [value]="account.accountNumber">
+                {{ account.accountNumber }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Amount</label>
+            <input type="number" [(ngModel)]="withdrawalForm.amount" name="withdrawalAmount" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" [(ngModel)]="withdrawalForm.description" name="withdrawalDescription">
+          </div>
+          <button type="submit" class="btn-primary">Withdraw</button>
+        </form>
+      </div>
+
+      <!-- Transfer Form -->
+      <div *ngIf="activeTab === 'transfer'" class="form-container">
+        <form (ngSubmit)="onTransfer()">
+          <div class="form-group">
+            <label>From Account</label>
+            <select [(ngModel)]="transferForm.fromAccountNumber" name="fromAccount">
+              <option *ngFor="let account of accounts" [value]="account.accountNumber">
+                {{ account.accountNumber }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>To Account Number</label>
+            <input type="text" [(ngModel)]="transferForm.toAccountNumber" name="toAccount" required>
+          </div>
+          <div class="form-group">
+            <label>Amount</label>
+            <input type="number" [(ngModel)]="transferForm.amount" name="transferAmount" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" [(ngModel)]="transferForm.description" name="transferDescription">
+          </div>
+          <button type="submit" class="btn-primary">Transfer</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="transaction-history">
+      <h2>Transaction History</h2>
+      <div class="transactions-list">
+        <div *ngFor="let transaction of transactions" class="transaction-item">
+          <div class="transaction-icon" [ngClass]="getTransactionColor(transaction.transactionType)">
+            {{ getTransactionIcon(transaction.transactionType) }}
+          </div>
+          <div class="transaction-details">
+            <h4>{{ transaction.description || transaction.transactionType }}</h4>
+            <span class="transaction-date">{{ transaction.createdAt | date: 'd MMMM yyyy HH:mm' }}</span>
+            <span class="transaction-status" [class]="transaction.status.toLowerCase()">
+              {{ transaction.status }}
+            </span>
+          </div>
+          <div class="transaction-amount" [ngClass]="getTransactionColor(transaction.transactionType)">
+            <span *ngIf="transaction.transactionType === 'DEPOSIT'">+</span>
+            <span *ngIf="transaction.transactionType === 'WITHDRAWAL'">-</span>
+            {{ transaction.amount | currency: 'EUR' }}
+          </div>
+        </div>
+        
+        <div *ngIf="transactions.length === 0" class="no-transactions">
+          <p>No transactions found</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

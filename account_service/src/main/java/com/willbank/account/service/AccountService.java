@@ -1,13 +1,16 @@
 package com.willbank.account.service;
 
+import com.willbank.account.client.ClientServiceClient;
 import com.willbank.account.dto.AccountDto;
+import com.willbank.account.dto.ClientDto;
 import com.willbank.account.dto.CreateAccountRequest;
 import com.willbank.account.dto.UpdateBalanceRequest;
 import com.willbank.account.entity.Account;
 import com.willbank.account.entity.AccountStatus;
-import com.willbank.account.entity.AccountType;
+import com.willbank.account.exception.ClientNotFoundException;
 import com.willbank.account.repository.AccountRepository;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,11 +27,25 @@ import java.util.stream.Collectors;
 public class AccountService {
     
     private final AccountRepository accountRepository;
+    private final ClientServiceClient clientServiceClient;
 
     
     @Transactional
     public AccountDto createAccount(CreateAccountRequest request) {
-        // Validate customer exists (would call client service in real implementation)
+        // Valider que le client existe dans le Client Service
+        log.info("Validating client with ID: {}", request.getCustomerId());
+        ClientDto client = validateClientExists(request.getCustomerId());
+        
+        // Vérifier que le client est actif et vérifié
+        if (!"ACTIVE".equals(client.getStatus())) {
+            throw new RuntimeException("Client is not active. Current status: " + client.getStatus());
+        }
+        
+        if (!"VERIFIED".equals(client.getKycStatus())) {
+            throw new RuntimeException("Client KYC is not verified. Current status: " + client.getKycStatus());
+        }
+        
+        log.info("Client validated: {} {}", client.getFirstName(), client.getLastName());
         
         Account account = new Account();
         account.setAccountNumber(generateAccountNumber());
@@ -112,6 +129,25 @@ public class AccountService {
         Random random = new Random();
         long number = 100000000L + random.nextLong(900000000L);
         return prefix + number;
+    }
+    
+    /**
+     * Valide que le client existe dans le Client Service
+     */
+    private ClientDto validateClientExists(Long customerId) {
+        try {
+            ClientDto client = clientServiceClient.getClientById(customerId);
+            if (client == null) {
+                throw new ClientNotFoundException(customerId);
+            }
+            return client;
+        } catch (FeignException.NotFound e) {
+            log.error("Client not found with ID: {}", customerId);
+            throw new ClientNotFoundException(customerId);
+        } catch (FeignException e) {
+            log.error("Error communicating with Client Service: {}", e.getMessage());
+            throw new RuntimeException("Unable to validate client. Client Service may be unavailable.");
+        }
     }
     
     private AccountDto mapToDto(Account account) {

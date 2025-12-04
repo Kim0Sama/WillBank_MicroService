@@ -1,0 +1,57 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <span class="logo-icon">🏦</span>
+      <span class="logo-text">WillBank</span>
+    </div>
+  </div>
+
+  <!-- User Info -->
+  <div class="user-info" *ngIf="currentUser">
+    <div class="user-avatar">{{ currentUser.firstName.charAt(0) }}{{ currentUser.lastName.charAt(0) }}</div>
+    <div class="user-details">
+      <span class="user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+      <span class="user-role" [class.admin]="isAdmin">{{ isAdmin ? 'Administrateur' : 'Client' }}</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <!-- Client Section - visible for all -->
+    <div class="nav-section" *ngIf="!isAdmin">
+      <p class="nav-section-title">Mon espace</p>
+      @for (item of clientMenuItems; track item.route) {
+        <a 
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="nav-item">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      }
+    </div>
+
+    <!-- Admin Section - visible only for admins -->
+    <div class="nav-section" *ngIf="isAdmin">
+      <p class="nav-section-title">Administration</p>
+      @for (item of adminMenuItems; track item.route) {
+        <a 
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+          class="nav-item">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      }
+    </div>
+  </nav>
+
+  <!-- Logout Button -->
+  <div class="sidebar-footer">
+    <button class="logout-btn" (click)="logout()">
+      <span class="nav-icon">🚪</span>
+      <span class="nav-label">Déconnexion</span>
+    </button>
+  </div>
+</aside>

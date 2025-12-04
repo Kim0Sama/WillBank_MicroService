@@ -1,0 +1,71 @@
+<div class="admin-transactions">
+  <div class="page-header">
+    <h1>Gestion des Transactions</h1>
+    <p class="subtitle">{{ filteredTransactions.length }} transaction(s) - Montant total: {{ getTotalAmount() | currency: 'EUR' }}</p>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (ngModelChange)="applyFilters()"
+        placeholder="Rechercher par référence ou compte...">
+    </div>
+
+    <select [(ngModel)]="filterType" (ngModelChange)="applyFilters()">
+      <option value="ALL">Tous les types</option>
+      <option value="DEPOSIT">Dépôt</option>
+      <option value="WITHDRAWAL">Retrait</option>
+      <option value="TRANSFER">Virement</option>
+    </select>
+
+    <select [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()">
+      <option value="ALL">Tous les statuts</option>
+      <option value="COMPLETED">Complété</option>
+      <option value="PENDING">En attente</option>
+      <option value="FAILED">Échoué</option>
+    </select>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Référence</th>
+          <th>Type</th>
+          <th>Compte source</th>
+          <th>Compte destination</th>
+          <th>Montant</th>
+          <th>Description</th>
+          <th>Statut</th>
+          <th>Date création</th>
+          <th>Date traitement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of filteredTransactions">
+          <td class="reference">{{ transaction.transactionReference }}</td>
+          <td>
+            <span class="type-badge">
+              {{ getTransactionIcon(transaction.transactionType) }} {{ transaction.transactionType }}
+            </span>
+          </td>
+          <td class="account">{{ transaction.fromAccount }}</td>
+          <td class="account">{{ transaction.toAccount || '-' }}</td>
+          <td class="amount">{{ transaction.amount | currency: 'EUR' }}</td>
+          <td class="description">{{ transaction.description || '-' }}</td>
+          <td><span class="badge" [ngClass]="transaction.status.toLowerCase()">{{ transaction.status }}</span></td>
+          <td>{{ transaction.createdAt | date: 'short' }}</td>
+          <td>{{ transaction.processedAt ? (transaction.processedAt | date: 'short') : '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="filteredTransactions.length === 0" class="no-data">
+      <p>Aucune transaction trouvée</p>
+    </div>
+  </div>
+</div>

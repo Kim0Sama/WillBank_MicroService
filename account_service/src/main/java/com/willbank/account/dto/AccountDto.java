@@ -18,6 +18,7 @@ public class AccountDto {
     private Long customerId;
     private AccountType accountType;
     private BigDecimal balance;
+    private String currency;
     private AccountStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

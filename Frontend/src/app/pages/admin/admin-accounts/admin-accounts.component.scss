@@ -1,0 +1,143 @@
+.admin-accounts {
+  padding: 2rem;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1d1f;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: #718ebf;
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 300px;
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e6e8ec;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: #1814f3;
+    }
+  }
+}
+
+select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e6e8ec;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #1814f3;
+  }
+}
+
+.table-container {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    background: #f5f7fa;
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #718ebf;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #e6e8ec;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #f5f7fa;
+      }
+
+      td {
+        padding: 1rem;
+        color: #1a1d1f;
+
+        &.account-number {
+          font-family: 'Courier New', monospace;
+          font-weight: 600;
+        }
+
+        &.balance {
+          font-weight: 700;
+          color: #16c784;
+        }
+      }
+    }
+  }
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+
+  &.active {
+    background: #e7f7ef;
+    color: #16c784;
+  }
+
+  &.inactive {
+    background: #fff4e5;
+    color: #f59e0b;
+  }
+
+  &.closed {
+    background: #ffe5e5;
+    color: #ea3943;
+  }
+
+  &.type {
+    background: #e7f0ff;
+    color: #1814f3;
+  }
+}
+
+.no-data {
+  padding: 3rem;
+  text-align: center;
+  color: #718ebf;
+}

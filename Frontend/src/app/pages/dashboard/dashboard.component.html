@@ -1,0 +1,117 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h1>Overview</h1>
+    <p *ngIf="currentUser">Welcome, {{ currentUser.firstName }} {{ currentUser.lastName }}</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <p>Loading your dashboard...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <p>{{ error }}</p>
+  </div>
+
+  <div class="dashboard-content" *ngIf="!loading && !error">
+    <!-- My Cards Section -->
+    <section class="cards-section">
+      <div class="section-header">
+        <h2>My Cards</h2>
+        <a href="#" class="see-all">See All</a>
+      </div>
+      
+      <div class="cards-container">
+        <div *ngIf="accounts.length === 0" class="no-accounts">
+          <p>No accounts found. Please contact support to create an account.</p>
+        </div>
+        
+        <div *ngFor="let account of accounts; let i = index" 
+             class="card" 
+             [class.primary]="i === 0"
+             [class.secondary]="i !== 0"
+             (click)="selectAccount(account)">
+          <div class="card-balance">
+            <span class="label">Balance</span>
+            <h3>{{ account.balance | currency: account.currency }}</h3>
+          </div>
+          
+          <div class="card-info">
+            <div class="card-holder">
+              <span class="label">CARD HOLDER</span>
+              <p>{{ currentUser?.firstName }} {{ currentUser?.lastName }}</p>
+            </div>
+            <div class="card-valid">
+              <span class="label">VALID THRU</span>
+              <p>{{ account.createdAt | date: 'MM/yy' }}</p>
+            </div>
+          </div>
+          
+          <div class="card-number">
+            <span>{{ formatCardNumber(account.accountNumber) }}</span>
+            <div class="card-icon">💳</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Transactions -->
+    <section class="transactions-section">
+      <h2>Recent Transaction</h2>
+      
+      <div class="transactions-list">
+        <div *ngFor="let transaction of recentTransactions" class="transaction-item">
+          <div class="transaction-icon" [ngClass]="getTransactionColor(transaction.transactionType)">
+            {{ getTransactionIcon(transaction.transactionType) }}
+          </div>
+          <div class="transaction-details">
+            <h4>{{ transaction.description || transaction.transactionType }}</h4>
+            <span class="transaction-date">{{ transaction.createdAt | date: 'd MMMM yyyy' }}</span>
+          </div>
+          <div class="transaction-amount" [ngClass]="getTransactionColor(transaction.transactionType)">
+            <span *ngIf="transaction.transactionType === 'DEPOSIT'">+</span>
+            <span *ngIf="transaction.transactionType === 'WITHDRAWAL'">-</span>
+            {{ transaction.amount | currency: 'EUR' }}
+          </div>
+        </div>
+        
+        <div *ngIf="recentTransactions.length === 0" class="no-transactions">
+          <p>No recent transactions</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weekly Activity Chart Placeholder -->
+    <section class="activity-section">
+      <h2>Weekly Activity</h2>
+      <div class="chart-placeholder">
+        <p>Chart visualization coming soon</p>
+      </div>
+    </section>
+
+    <!-- Expense Statistics Placeholder -->
+    <section class="statistics-section">
+      <h2>Expense Statistics</h2>
+      <div class="chart-placeholder">
+        <p>Statistics visualization coming soon</p>
+      </div>
+    </section>
+
+    <!-- Quick Transfer Placeholder -->
+    <section class="transfer-section">
+      <h2>Quick Transfer</h2>
+      <div class="transfer-placeholder">
+        <p>Transfer feature available in Transactions page</p>
+      </div>
+    </section>
+
+    <!-- Balance History Placeholder -->
+    <section class="balance-section">
+      <h2>Balance History</h2>
+      <div class="chart-placeholder">
+        <p>Balance history coming soon</p>
+      </div>
+    </section>
+  </div>
+</div>

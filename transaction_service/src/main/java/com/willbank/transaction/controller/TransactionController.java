@@ -31,6 +31,12 @@ public class TransactionController {
         return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
     
+    @PostMapping("/transfer")
+    public ResponseEntity<TransactionDto> processTransfer(@Valid @RequestBody com.willbank.transaction.dto.TransferRequest request) {
+        TransactionDto transaction = transactionService.processTransfer(request);
+        return new ResponseEntity<>(transaction, HttpStatus.CREATED);
+    }
+    
     @GetMapping("/account/{accountNumber}")
     public ResponseEntity<List<TransactionDto>> getTransactionsByAccount(@PathVariable String accountNumber) {
         List<TransactionDto> transactions = transactionService.getTransactionsByAccount(accountNumber);

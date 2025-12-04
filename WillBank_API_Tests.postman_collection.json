@@ -1,0 +1,677 @@
+{
+  "info": {
+    "name": "WillBank Microservices API Tests",
+    "description": "Collection complète pour tester tous les microservices WillBank avec MySQL",
+    "version": "2.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "willbank-api-tests-v2"
+  },
+  "item": [
+    {
+      "name": "Client Service",
+      "item": [
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Durand\",\n  \"email\": \"alice.durand@example.com\",\n  \"phoneNumber\": \"+33678901234\",\n  \"address\": \"10 Rue de la Paix\",\n  \"city\": \"Paris\",\n  \"postalCode\": \"75002\",\n  \"country\": \"France\",\n  \"dateOfBirth\": \"1992-06-15\",\n  \"nationalId\": \"1920615678901\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8084/api/clients",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients"]
+            }
+          }
+        },
+        {
+          "name": "Get All Clients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/clients",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients"]
+            }
+          }
+        },
+        {
+          "name": "Get Client by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/clients/{{clientId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "{{clientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Client by Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/clients/email/{{clientEmail}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "email", "{{clientEmail}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Clients by Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/clients/status/ACTIVE",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "status", "ACTIVE"]
+            }
+          }
+        },
+        {
+          "name": "Get Clients by KYC Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/clients/kyc-status/VERIFIED",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "kyc-status", "VERIFIED"]
+            }
+          }
+        },
+        {
+          "name": "Update Client",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"+33699887766\",\n  \"address\": \"20 Avenue des Champs-Élysées\",\n  \"city\": \"Paris\",\n  \"postalCode\": \"75008\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8084/api/clients/{{clientId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "{{clientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Client Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/clients/{{clientId}}/status?status=ACTIVE",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "{{clientId}}", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ACTIVE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update KYC Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kycStatus\": \"VERIFIED\",\n  \"notes\": \"Documents vérifiés avec succès\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8084/api/clients/{{clientId}}/kyc",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "{{clientId}}", "kyc"]
+            }
+          }
+        },
+        {
+          "name": "Delete Client",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/clients/{{clientId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "clients", "{{clientId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account Service",
+      "item": [
+        {
+          "name": "Create Account - Savings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": {{clientId}},\n  \"accountType\": \"SAVINGS\",\n  \"initialBalance\": 1000.00\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/accounts",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts"]
+            }
+          }
+        },
+        {
+          "name": "Create Account - Current",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": {{clientId}},\n  \"accountType\": \"CURRENT\",\n  \"initialBalance\": 5000.00\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/accounts",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts"]
+            }
+          }
+        },
+        {
+          "name": "Get Account by Number",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/accounts/{{accountNumber}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts", "{{accountNumber}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Accounts by Customer ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/accounts/customer/{{clientId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts", "customer", "{{clientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Account Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/accounts/{{accountNumber}}/balance",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts", "{{accountNumber}}", "balance"]
+            }
+          }
+        },
+        {
+          "name": "Update Balance - Credit",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 500.00,\n  \"operationType\": \"CREDIT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/accounts/{{accountNumber}}/balance",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts", "{{accountNumber}}", "balance"]
+            }
+          }
+        },
+        {
+          "name": "Update Balance - Debit",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 200.00,\n  \"operationType\": \"DEBIT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/accounts/{{accountNumber}}/balance",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts", "{{accountNumber}}", "balance"]
+            }
+          }
+        },
+        {
+          "name": "Update Account Status - Active",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/accounts/{{accountNumber}}/status?status=ACTIVE",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts", "{{accountNumber}}", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ACTIVE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Account Status - Suspended",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/accounts/{{accountNumber}}/status?status=SUSPENDED",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "accounts", "{{accountNumber}}", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "SUSPENDED"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transaction Service",
+      "item": [
+        {
+          "name": "Process Deposit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountNumber\": \"{{accountNumber}}\",\n  \"amount\": 250.00,\n  \"description\": \"Dépôt en espèces\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/transactions/deposit",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "transactions", "deposit"]
+            }
+          }
+        },
+        {
+          "name": "Process Withdrawal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountNumber\": \"{{accountNumber}}\",\n  \"amount\": 100.00,\n  \"description\": \"Retrait DAB\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/transactions/withdrawal",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "transactions", "withdrawal"]
+            }
+          }
+        },
+        {
+          "name": "Process Transfer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromAccountNumber\": \"{{accountNumber}}\",\n  \"toAccountNumber\": \"{{toAccountNumber}}\",\n  \"amount\": 150.00,\n  \"description\": \"Virement\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/transactions/transfer",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "transactions", "transfer"]
+            }
+          }
+        },
+        {
+          "name": "Get Transactions by Account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/transactions/account/{{accountNumber}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "transactions", "account", "{{accountNumber}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Transaction by Reference",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/transactions/{{transactionReference}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "transactions", "{{transactionReference}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Service",
+      "item": [
+        {
+          "name": "Test Notification",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/test",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["api", "test"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Eureka Service",
+      "item": [
+        {
+          "name": "Get Eureka Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8761",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8761"
+            }
+          }
+        },
+        {
+          "name": "Get Registered Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8761/eureka/apps",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8761",
+              "path": ["eureka", "apps"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "Client Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Account Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Transaction Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Notification Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["actuator", "health"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "clientId",
+      "value": "1",
+      "type": "string",
+      "description": "ID du client (données de test MySQL)"
+    },
+    {
+      "key": "clientEmail",
+      "value": "jean.dupont@example.com",
+      "type": "string",
+      "description": "Email du client de test"
+    },
+    {
+      "key": "accountNumber",
+      "value": "ACC1001001",
+      "type": "string",
+      "description": "Numéro de compte de test (données MySQL)"
+    },
+    {
+      "key": "toAccountNumber",
+      "value": "ACC1003001",
+      "type": "string",
+      "description": "Compte destinataire pour les virements"
+    },
+    {
+      "key": "transactionReference",
+      "value": "TXN20240101001",
+      "type": "string",
+      "description": "Référence de transaction de test"
+    },
+    {
+      "key": "baseUrlClient",
+      "value": "http://localhost:8084",
+      "type": "string",
+      "description": "URL de base du Client Service"
+    },
+    {
+      "key": "baseUrlAccount",
+      "value": "http://localhost:8081",
+      "type": "string",
+      "description": "URL de base du Account Service"
+    },
+    {
+      "key": "baseUrlTransaction",
+      "value": "http://localhost:8082",
+      "type": "string",
+      "description": "URL de base du Transaction Service"
+    },
+    {
+      "key": "baseUrlNotification",
+      "value": "http://localhost:8083",
+      "type": "string",
+      "description": "URL de base du Notification Service"
+    },
+    {
+      "key": "baseUrlEureka",
+      "value": "http://localhost:8761",
+      "type": "string",
+      "description": "URL de base du Eureka Server"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Script pré-requête global",
+          "console.log('Exécution de la requête:', pm.info.requestName);"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Tests globaux",
+          "pm.test('Status code is successful', function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+          "});",
+          "",
+          "pm.test('Response time is less than 2000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+          "});"
+        ]
+      }
+    }
+  ]
+}

@@ -130,6 +130,64 @@ public class TransactionService {
         }
     }
     
+    @Transactional
+    public TransactionDto processTransfer(com.willbank.transaction.dto.TransferRequest request) {
+        log.info("Processing transfer from {} to {} amount: {}", 
+            request.getFromAccountNumber(), request.getToAccountNumber(), request.getAmount());
+        
+        try {
+            // Validate source account balance
+            BigDecimal sourceBalance = accountServiceClient.getAccountBalance(request.getFromAccountNumber());
+            
+            if (sourceBalance.compareTo(request.getAmount()) < 0) {
+                throw new RuntimeException("Insufficient funds in source account. Current balance: " + sourceBalance);
+            }
+            
+            // Validate destination account exists
+            accountServiceClient.getAccountBalance(request.getToAccountNumber());
+            
+            // Create transaction record
+            Transaction transaction = new Transaction();
+            transaction.setTransactionReference(generateTransactionReference());
+            transaction.setTransactionType(TransactionType.TRANSFER);
+            transaction.setFromAccount(request.getFromAccountNumber());
+            transaction.setToAccount(request.getToAccountNumber());
+            transaction.setAmount(request.getAmount());
+            transaction.setDescription(request.getDescription() != null ? request.getDescription() : "Transfer");
+            transaction.setStatus(TransactionStatus.PENDING);
+            
+            Transaction savedTransaction = transactionRepository.save(transaction);
+            
+            // Debit source account
+            UpdateBalanceRequest debitRequest = 
+                new UpdateBalanceRequest(
+                    request.getAmount(), 
+                    UpdateBalanceRequest.OperationType.DEBIT
+                );
+            accountServiceClient.updateAccountBalance(request.getFromAccountNumber(), debitRequest);
+            
+            // Credit destination account
+            UpdateBalanceRequest creditRequest = 
+                new UpdateBalanceRequest(
+                    request.getAmount(), 
+                    UpdateBalanceRequest.OperationType.CREDIT
+                );
+            accountServiceClient.updateAccountBalance(request.getToAccountNumber(), creditRequest);
+            
+            // Mark transaction as completed
+            savedTransaction.setStatus(TransactionStatus.COMPLETED);
+            savedTransaction.setProcessedAt(LocalDateTime.now());
+            savedTransaction = transactionRepository.save(savedTransaction);
+            
+            log.info("Transfer completed successfully: {}", savedTransaction.getTransactionReference());
+            return mapToDto(savedTransaction);
+            
+        } catch (Exception e) {
+            log.error("Transfer failed from {} to {}", request.getFromAccountNumber(), request.getToAccountNumber(), e);
+            throw new RuntimeException("Transfer failed: " + e.getMessage());
+        }
+    }
+    
     public List<TransactionDto> getTransactionsByAccount(String accountNumber) {
         return transactionRepository.findByFromAccountOrToAccountOrderByCreatedAtDesc(accountNumber, accountNumber)
                 .stream()
