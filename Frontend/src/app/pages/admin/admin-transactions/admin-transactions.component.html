@@ -1,7 +1,7 @@
 <div class="admin-transactions">
   <div class="page-header">
     <h1>Gestion des Transactions</h1>
-    <p class="subtitle">{{ filteredTransactions.length }} transaction(s) - Montant total: {{ getTotalAmount() | currency: 'EUR' }}</p>
+    <p class="subtitle">{{ filteredTransactions.length }} transaction(s) - Montant total: {{ getTotalAmount() | currency: 'XOF':'symbol':'1.0-0' }}</p>
   </div>
 
   <!-- Filters -->
@@ -55,7 +55,7 @@
           </td>
           <td class="account">{{ transaction.fromAccount }}</td>
           <td class="account">{{ transaction.toAccount || '-' }}</td>
-          <td class="amount">{{ transaction.amount | currency: 'EUR' }}</td>
+          <td class="amount">{{ transaction.amount | currency: 'XOF':'symbol':'1.0-0' }}</td>
           <td class="description">{{ transaction.description || '-' }}</td>
           <td><span class="badge" [ngClass]="transaction.status.toLowerCase()">{{ transaction.status }}</span></td>
           <td>{{ transaction.createdAt | date: 'short' }}</td>

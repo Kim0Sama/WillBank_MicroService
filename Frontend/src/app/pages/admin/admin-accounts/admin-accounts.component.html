@@ -2,7 +2,7 @@
   <div class="page-header">
     <h1>Gestion des Comptes</h1>
     <div class="header-actions">
-      <p class="subtitle">{{ filteredAccounts.length }} compte(s) - Solde total: {{ getTotalBalance() | currency: 'EUR' }}</p>
+      <p class="subtitle">{{ filteredAccounts.length }} compte(s) - Solde total: {{ getTotalBalance() | currency: 'XOF':'symbol':'1.0-0' }}</p>
       <button class="btn-primary" (click)="showCreateForm = !showCreateForm">
         {{ showCreateForm ? 'Annuler' : '+ Nouveau Compte' }}
       </button>
@@ -84,7 +84,7 @@
           <td class="account-number">{{ account.accountNumber }}</td>
           <td>{{ getClientName(account.customerId) }}</td>
           <td><span class="badge type">{{ account.accountType }}</span></td>
-          <td class="balance">{{ account.balance | currency: account.currency }}</td>
+          <td class="balance">{{ account.balance | currency: 'XOF':'symbol':'1.0-0' }}</td>
           <td>{{ account.currency }}</td>
           <td><span class="badge" [ngClass]="account.status.toLowerCase()">{{ account.status }}</span></td>
           <td>{{ account.createdAt | date: 'short' }}</td>
@@ -133,7 +133,7 @@
           </div>
           <div class="detail-item">
             <label>Solde</label>
-            <span class="balance">{{ selectedAccount.balance | currency: selectedAccount.currency }}</span>
+            <span class="balance">{{ selectedAccount.balance | currency: 'XOF':'symbol':'1.0-0' }}</span>
           </div>
           <div class="detail-item">
             <label>Devise</label>

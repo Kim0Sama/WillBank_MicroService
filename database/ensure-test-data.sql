@@ -21,21 +21,21 @@ SELECT COUNT(*) as account_count FROM accounts;
 INSERT IGNORE INTO accounts (account_number, customer_id, account_type, balance, currency, status, created_at, updated_at)
 VALUES
 -- Client ID 1
-('ACC1001000001', 1, 'CHECKING', 5000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
-('ACC1001000002', 1, 'SAVINGS', 15000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
+('ACC1001000001', 1, 'CHECKING', 5000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
+('ACC1001000002', 1, 'SAVINGS', 15000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
 
 -- Client ID 2
-('ACC1002000001', 2, 'CHECKING', 3500.00, 'EUR', 'ACTIVE', NOW(), NOW()),
-('ACC1002000002', 2, 'BUSINESS', 25000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
+('ACC1002000001', 2, 'CHECKING', 3500.00, 'XOF', 'ACTIVE', NOW(), NOW()),
+('ACC1002000002', 2, 'BUSINESS', 25000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
 
 -- Client ID 3
-('ACC1003000001', 3, 'CHECKING', 7200.00, 'EUR', 'ACTIVE', NOW(), NOW()),
+('ACC1003000001', 3, 'CHECKING', 7200.00, 'XOF', 'ACTIVE', NOW(), NOW()),
 
 -- Client ID 4
-('ACC1004000001', 4, 'SAVINGS', 12000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
+('ACC1004000001', 4, 'SAVINGS', 12000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
 
 -- Client ID 5 (admin)
-('ACC1005000001', 5, 'CHECKING', 100000.00, 'EUR', 'ACTIVE', NOW(), NOW());
+('ACC1005000001', 5, 'CHECKING', 100000.00, 'XOF', 'ACTIVE', NOW(), NOW());
 
 SELECT 'Accounts after insert:' as status;
 SELECT account_number, customer_id, account_type, balance, currency, status FROM accounts ORDER BY customer_id;

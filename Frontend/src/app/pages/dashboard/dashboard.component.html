@@ -72,7 +72,7 @@
           <div class="transaction-amount" [ngClass]="getTransactionColor(transaction.transactionType)">
             <span *ngIf="transaction.transactionType === 'DEPOSIT'">+</span>
             <span *ngIf="transaction.transactionType === 'WITHDRAWAL'">-</span>
-            {{ transaction.amount | currency: 'EUR' }}
+            {{ transaction.amount | currency: 'XOF':'symbol':'1.0-0' }}
           </div>
         </div>
         

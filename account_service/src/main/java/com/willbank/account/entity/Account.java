@@ -37,7 +37,7 @@ public class Account {
     private BigDecimal balance;
     
     @Column(length = 3)
-    private String currency = "EUR";
+    private String currency = "XOF";
     
     @NotNull
     @Enumerated(EnumType.STRING)

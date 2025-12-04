@@ -27,7 +27,7 @@
     <div class="stat-card">
       <div class="stat-icon balance">💰</div>
       <div class="stat-content">
-        <h3>{{ stats.totalBalance | currency: 'EUR' }}</h3>
+        <h3>{{ stats.totalBalance | currency: 'XOF':'symbol':'1.0-0' }}</h3>
         <p>Solde Total</p>
         <span class="stat-detail">Tous comptes</span>
       </div>
@@ -107,7 +107,7 @@
             <td>{{ transaction.transactionReference }}</td>
             <td>{{ transaction.transactionType }}</td>
             <td>{{ transaction.fromAccount }}</td>
-            <td class="amount">{{ transaction.amount | currency: 'EUR' }}</td>
+            <td class="amount">{{ transaction.amount | currency: 'XOF':'symbol':'1.0-0' }}</td>
             <td><span class="badge" [ngClass]="transaction.status.toLowerCase()">{{ transaction.status }}</span></td>
             <td>{{ transaction.createdAt | date: 'short' }}</td>
           </tr>

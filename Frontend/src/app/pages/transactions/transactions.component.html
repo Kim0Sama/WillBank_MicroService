@@ -9,7 +9,7 @@
       <label for="account">Select Account:</label>
       <select id="account" [(ngModel)]="selectedAccount" (change)="onAccountChange()">
         <option *ngFor="let account of accounts" [value]="account.accountNumber">
-          {{ account.accountNumber }} - {{ account.balance | currency: account.currency }}
+          {{ account.accountNumber }} - {{ account.balance | currency: 'XOF':'symbol':'1.0-0' }}
         </option>
       </select>
     </div>
@@ -129,7 +129,7 @@
           <div class="transaction-amount" [ngClass]="getTransactionColor(transaction.transactionType)">
             <span *ngIf="transaction.transactionType === 'DEPOSIT'">+</span>
             <span *ngIf="transaction.transactionType === 'WITHDRAWAL'">-</span>
-            {{ transaction.amount | currency: 'EUR' }}
+            {{ transaction.amount | currency: 'XOF':'symbol':'1.0-0' }}
           </div>
         </div>
         

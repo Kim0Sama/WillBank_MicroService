@@ -55,7 +55,7 @@ CREATE TABLE accounts (
     customer_id BIGINT NOT NULL,
     account_type VARCHAR(20) NOT NULL,
     balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
-    currency VARCHAR(3) NOT NULL DEFAULT 'EUR',
+    currency VARCHAR(3) NOT NULL DEFAULT 'XOF',
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -66,11 +66,11 @@ CREATE TABLE accounts (
 
 -- Données de test pour les comptes
 INSERT INTO accounts (account_number, customer_id, account_type, balance, currency, status) VALUES
-('ACC1001001', 1, 'SAVINGS', 5000.00, 'EUR', 'ACTIVE'),
-('ACC1001002', 1, 'CURRENT', 2500.00, 'EUR', 'ACTIVE'),
-('ACC1003001', 3, 'SAVINGS', 10000.00, 'EUR', 'ACTIVE'),
-('ACC1003002', 3, 'CURRENT', 3500.00, 'EUR', 'ACTIVE'),
-('ACC1004001', 4, 'SAVINGS', 1500.00, 'EUR', 'SUSPENDED');
+('ACC1001001', 1, 'SAVINGS', 5000.00, 'XOF', 'ACTIVE'),
+('ACC1001002', 1, 'CURRENT', 2500.00, 'XOF', 'ACTIVE'),
+('ACC1003001', 3, 'SAVINGS', 10000.00, 'XOF', 'ACTIVE'),
+('ACC1003002', 3, 'CURRENT', 3500.00, 'XOF', 'ACTIVE'),
+('ACC1004001', 4, 'SAVINGS', 1500.00, 'XOF', 'SUSPENDED');
 
 -- ============================================
 -- 3. BASE DE DONNÉES TRANSACTION SERVICE

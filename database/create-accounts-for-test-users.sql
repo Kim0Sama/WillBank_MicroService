@@ -11,20 +11,20 @@ DELETE FROM accounts WHERE customer_id IN (6, 7, 8);
 -- Créer des comptes pour Jean Dupont (ID 6)
 INSERT INTO accounts (account_number, customer_id, account_type, balance, currency, status, created_at, updated_at)
 VALUES
-('ACC1006000001', 6, 'CHECKING', 5000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
-('ACC1006000002', 6, 'SAVINGS', 15000.00, 'EUR', 'ACTIVE', NOW(), NOW());
+('ACC1006000001', 6, 'CHECKING', 5000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
+('ACC1006000002', 6, 'SAVINGS', 15000.00, 'XOF', 'ACTIVE', NOW(), NOW());
 
 -- Créer des comptes pour Admin WillBank (ID 7)
 INSERT INTO accounts (account_number, customer_id, account_type, balance, currency, status, created_at, updated_at)
 VALUES
-('ACC1007000001', 7, 'CHECKING', 100000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
-('ACC1007000002', 7, 'BUSINESS', 500000.00, 'EUR', 'ACTIVE', NOW(), NOW());
+('ACC1007000001', 7, 'CHECKING', 100000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
+('ACC1007000002', 7, 'BUSINESS', 500000.00, 'XOF', 'ACTIVE', NOW(), NOW());
 
 -- Créer des comptes pour Marie Martin (ID 8) si elle existe
 INSERT INTO accounts (account_number, customer_id, account_type, balance, currency, status, created_at, updated_at)
 VALUES
-('ACC1008000001', 8, 'CHECKING', 7200.00, 'EUR', 'ACTIVE', NOW(), NOW()),
-('ACC1008000002', 8, 'SAVINGS', 25000.00, 'EUR', 'ACTIVE', NOW(), NOW());
+('ACC1008000001', 8, 'CHECKING', 7200.00, 'XOF', 'ACTIVE', NOW(), NOW()),
+('ACC1008000002', 8, 'SAVINGS', 25000.00, 'XOF', 'ACTIVE', NOW(), NOW());
 
 COMMIT;
 

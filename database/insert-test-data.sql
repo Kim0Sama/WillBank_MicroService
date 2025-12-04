@@ -7,8 +7,8 @@ USE account_db;
 INSERT INTO accounts (account_number, customer_id, account_type, balance, currency, status, created_at, updated_at)
 VALUES
 -- Client ID 1 (marie.martin@example.com)
-('ACC1001000001', 1, 'CHECKING', 5000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
-('ACC1001000002', 1, 'SAVINGS', 15000.00, 'EUR', 'ACTIVE', NOW(), NOW()),
+('ACC1001000001', 1, 'CHECKING', 5000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
+('ACC1001000002', 1, 'SAVINGS', 15000.00, 'XOF', 'ACTIVE', NOW(), NOW()),
 
 -- Client ID 2 (pierre.bernard@example.com)
 ('ACC1002000001', 2, 'CHECKING', 3500.00, 'EUR', 'ACTIVE', NOW(), NOW()),
