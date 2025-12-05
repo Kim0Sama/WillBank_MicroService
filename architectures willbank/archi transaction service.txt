@@ -1,0 +1,50 @@
+┌─────────────────────────────────────────────────────────────┐
+│                  Transaction Service                        │
+├─────────────────────────────────────────────────────────────┤
+│  Controller Layer                                           │
+│  ├── TransactionController (REST API)                      │
+│  └── AdminTransactionController (Admin operations)         │
+├─────────────────────────────────────────────────────────────┤
+│  Service Layer                                              │
+│  └── TransactionService (Business Logic)                   │
+├─────────────────────────────────────────────────────────────┤
+│  Repository Layer                                           │
+│  └── TransactionRepository (Data Access)                   │
+├─────────────────────────────────────────────────────────────┤
+│  External Communication                                     │
+│  └── AccountServiceClient (Feign Client)                   │
+├─────────────────────────────────────────────────────────────┤
+│  Data Model                                                 │
+│  ├── Transaction Entity                                     │
+│  ├── TransactionType Enum                                   │
+│  └── TransactionStatus Enum                                 │
+└─────────────────────────────────────────────────────────────┘
+
+
+
+#### 1. Modèle de Données
+```java
+Transaction Entity:
+- id: Long (Primary Key)
+- transactionReference: String (Unique, Generated)
+- transactionType: TransactionType (DEPOSIT, WITHDRAWAL, TRANSFER)
+- fromAccount: String (Source account number)
+- toAccount: String (Destination account, nullable)
+- amount: BigDecimal (Transaction amount)
+- description: String (Transaction description)
+- status: TransactionStatus (PENDING, COMPLETED, FAILED)
+- createdAt: LocalDateTime
+- processedAt: LocalDateTime
+```
+
+#### 2. Capacités de Logique Métier
+- Traitement des dépôts avec mise à jour des soldes
+- Traitement des retraits avec validation des soldes
+- Virements internes entre comptes WillBank
+- Suivi de l'historique des transactions
+- Traitement atomique des transactions
+
+#### 3. Points d'Intégration
+- **Service de Comptes** : Validation et mise à jour des soldes
+- **RabbitMQ** : Publication d'événements (configuré mais pas entièrement implémenté)
+- **Serveur Eureka** : Enregistrement et découverte de services

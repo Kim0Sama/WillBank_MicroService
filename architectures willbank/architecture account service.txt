@@ -1,0 +1,52 @@
+┌─────────────────────────────────────────────────────────────┐
+│                    Account Service                          │
+├─────────────────────────────────────────────────────────────┤
+│  Controller Layer                                           │
+│  ├── AccountController (REST API)                          │
+│  └── AdminAccountController (Admin operations)             │
+├─────────────────────────────────────────────────────────────┤
+│  Service Layer                                              │
+│  └── AccountService (Business Logic)                       │
+├─────────────────────────────────────────────────────────────┤
+│  Repository Layer                                           │
+│  └── AccountRepository (Data Access)                       │
+├─────────────────────────────────────────────────────────────┤
+│  External Communication                                     │
+│  ├── ClientServiceClient (Feign Client)                    │
+│  └── ClientServiceClientFallback (Circuit Breaker)         │
+├─────────────────────────────────────────────────────────────┤
+│  Data Model                                                 │
+│  ├── Account Entity                                         │
+│  ├── AccountType Enum                                       │
+│  └── AccountStatus Enum                                     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+
+### Composants du Service de Comptes
+
+#### 1. Modèle de Données
+```java
+Account Entity:
+- id: Long (Primary Key)
+- accountNumber: String (Unique, Generated)
+- customerId: Long (Foreign Key to Client Service)
+- accountType: AccountType (CHECKING, SAVINGS)
+- balance: BigDecimal (Current balance)
+- currency: String (Default: XOF)
+- status: AccountStatus (ACTIVE, BLOCKED, CLOSED)
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+```
+
+#### 2. Capacités de Logique Métier
+- Création de comptes avec validation client
+- Gestion des soldes (opérations de crédit/débit)
+- Gestion du statut des comptes
+- Support multi-comptes par client
+- Génération automatique de numéros de compte
+
+#### 3. Points d'Intégration
+- **Service Client** : Valide l'existence du client et le statut KYC
+- **Service Transaction** : Fournit les mises à jour de solde via API REST
+- **Serveur Eureka** : Enregistrement et découverte de services
